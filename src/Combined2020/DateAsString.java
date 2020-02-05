@@ -12,6 +12,6 @@ public class DateAsString {
     	DateFormat dateFormat = new SimpleDateFormat("MMddyyyy"); 
     	String strDate = dateFormat.format(date); 
     	this.getDate = strDate; 
-    	System.out.println("the date is " + strDate);
+    	//System.out.println("the date is " + strDate);
     }
 }

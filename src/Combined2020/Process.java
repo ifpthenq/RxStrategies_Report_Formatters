@@ -35,20 +35,20 @@ public class Process {
 		//parse the string into an array
 		//String [] array = st2.split(","); 
 		String [] array = st.split("\\t", -1);
-		System.out.println(array[0]);
+		//System.out.println(array[0]);
 		//check if its the header row
 		if(array[0].trim().contains("ARPNUM")) {
 			
 			String returnThis = new String(); 
-			returnThis = "ARPNUM|ARMRNUM|ARTYPE|ARORIGFC|IVNUM|IVDESC|IVCHGAMT|IVCHGQTY|IVCHGDTE|REVCODE "; 
-			System.out.println("Header Written");
+			returnThis = "ARPNUM|ARMRNUM|ARTYPE|ARORIGFC|IVNUM|IVDESC|IVCHGAMT|IVCHGQTY|IVCHGDTE|REVCODE|NDC "; 
+			//System.out.println("Header Written");
 			return returnThis; 
 		}else {
 			//compare IVNUM array[4] to every number in the revList looking for a match
 			for (Revkey key : revList) {
 				if(key.IVNUM.trim().equals(array[4].trim())) {
 			    //if it finds a match
-					System.out.println(key.IVREVCOD + " is " + key.IVNUM);
+					//System.out.println(key.IVREVCOD + " is " + key.IVNUM);
 					revcode = Integer.parseInt(key.IVREVCOD); 
 					if(((revcode >= 250) && (revcode <= 259)) || ((revcode >= 630 && revcode <= 637))) {
 					//and if that match is within the range spefied by RxStrategies
@@ -62,7 +62,8 @@ public class Process {
 								+ array[6].trim() + "|"
 								+ array[7].trim() + "|"
 								+ array[8].trim() + "|"
-								+ key.IVREVCOD.trim();
+								+ key.IVREVCOD.trim() + "|"
+								+ key.NDC.trim();
 						return returnThis;
 					}
 					

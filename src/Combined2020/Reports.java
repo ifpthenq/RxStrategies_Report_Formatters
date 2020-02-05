@@ -37,7 +37,8 @@ public class Reports {
     public String outputFilenameDrug = new String(); 
     public Boolean outFileDrugSet = false;
     public Boolean fileCompleteDrug = false; 
-    public String inputFilenameRev = new String("cosswalk.csv"); 
+    public String inputFilenameRev = new String("crosswalk.csv"); 
+    public String inputFilenameNdc = new String("ndc.txt"); 
     
     /* declare ADT variables */ 
     public String inputFilenameADT = new String ("adt.txt"); 
@@ -125,6 +126,9 @@ public class Reports {
 					inputFilenameADT = baseFileLocation + "\\" + "adt.txt"; 
 					outputFilenameADT = "2135_RCH_ADT_" + textField.getText().trim() + ".txt"; 
 					outputFilenameADT = infc.getSelectedFile().toString() + "\\" + outputFilenameADT; 
+					/*Set NDC Filename */ 
+					inputFilenameNdc = baseFileLocation + "\\" + "ndc.txt";
+					
 					
 					
 				}

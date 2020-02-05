@@ -21,21 +21,25 @@ public class ProcessDrug {
 	public String inFile = new String();
 	public String outFile = new String(); 
 	public String revFile = new String();
+	public String ndcFile = new String(); 
 	public Reports me; 
 	public File inputFile; 
 	public File outputFile; 
 	public File revcodeFile; 
 	public List<Revkey> revList = new ArrayList<Revkey>(); 
 	static String NEWLINE = "\r\n"; 
+	public File ndcivnumFile; 
 
 	public ProcessDrug(Reports me) {
 		this.me = me; 
 		this.inFile = me.inputFilenameDrug;
 		this.outFile = me.outputFilenameDrug; 
 		this.revFile = me.inputFilenameRev;
+		this.ndcFile = me.inputFilenameNdc;
 		this.inputFile = new File(inFile);
 		this.outputFile = new File(outFile); 
 		this.revcodeFile = new File(revFile); 
+		this.ndcivnumFile = new File(ndcFile);
 		try {
 			/* Read in revcode file and build a list (revlist) */ 
 			//create readers
@@ -45,7 +49,7 @@ public class ProcessDrug {
 			//    create a keypair and put it in array
 			
 			while ((st2 = br2.readLine()) != null) {
-				System.out.println("Reading in line: " + st2);
+				//System.out.println("Reading in line: " + st2);
 				//parse line into sections
 				
 				String[] revLine = st2.split(",");
@@ -54,12 +58,47 @@ public class ProcessDrug {
 					Revkey revcodeKey = new Revkey(); 
 					revcodeKey.IVNUM = revLine[0].trim(); 
 					revcodeKey.IVREVCOD = revLine[1].trim();
+					revcodeKey.NDC = "Not Found"; 
 					//put the revcode in the list
 					revList.add(revcodeKey);
 				}
 				
 			}
 			br2.close();
+			/*
+			 * Read in the NDC file and add NDC to revlist
+			 */
+			
+			BufferedReader br3 = new BufferedReader(new FileReader(ndcivnumFile));
+			String st3;
+			//while there are more lines do this
+			while((st3 = br3.readLine()) != null) {
+				//System.out.println("Read in next line of NDC " + st3);
+				String[] ndcLine = st3.split("\\t", -1);
+				//System.out.println(ndcLine[0] + " | " + ndcLine[9] + " | " +ndcLine[10] + " | " +ndcLine[11]); 
+				//if it's not greater than 11 don't even try to read it
+				/*for (String str : ndcLine) {
+					System.out.print(str + NEWLINE);
+					}
+				*/
+				if(ndcLine.length > 8) {
+					
+					
+					String ndc = ndcLine[9].trim(); 
+					String testIV = ndcLine[0].trim(); 
+					//System.out.println("should have written" + ndc);
+					
+					//search the whole revcode list for any ivnum that matches
+					for (Revkey key : revList) {
+						//System.out.println(key.IVNUM.trim() + "..." + testIV) ;
+						if(key.IVNUM.trim().equals(testIV)) {
+							key.NDC = ndc; 
+						}
+					}
+				}//end if >11
+			}//end while
+			
+			
 			 /*
 			  * Process Output File
 			  */
